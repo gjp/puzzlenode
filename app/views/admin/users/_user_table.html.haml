@@ -1,0 +1,23 @@
+%table
+  %tr
+    %th= sortable 'name'
+    %th= sortable 'nickname'
+    %th= sortable 'solved'
+    %th= sortable 'attempted'
+    %th= sortable 'created_at', 'Member Since'
+    %th.controls
+  - @users.each do |user|
+    %tr
+      %td
+        = link_to user.name,
+          edit_admin_user_path(user)
+      %td= user.nickname
+      %td= user.solved
+      %td= user.attempted
+      %td= user.created_at
+      %td
+        = link_to "Destroy", admin_user_path(user),
+          :confirm => "Are you sure you wish to destroy this user?",
+          :method  => "DELETE"
+
+= will_paginate @users

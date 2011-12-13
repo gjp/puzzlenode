@@ -26,3 +26,22 @@ form.search
     width: 250px
   input
     vertical-align: middle
+
+@mixin border-arrow
+  content: ' '
+  position: absolute
+  height: 0
+  width: 0
+  margin-left: 0.25em
+  border: 5px solid transparent
+
+th
+  a.current
+    margin-right: 0.5em
+    &.asc:after
+      @include border-arrow
+      border-bottom-color: #fff
+    &.desc:after
+      @include border-arrow
+      margin-top: 0.5em
+      border-top-color: #fff

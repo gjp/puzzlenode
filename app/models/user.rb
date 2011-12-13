@@ -7,6 +7,15 @@ class User < ActiveRecord::Base
 
   scope :admin, where(:admin => true)
   scope :eligible_for_display, where(:admin => false, :draft_access => false)
+  scope :with_submissions, 
+    select('users.*,
+           (select count(*)
+              from submissions
+             where users.id = user_id) as solved,
+           (select count(*)
+              from submissions
+             where users.id = user_id
+               and correct = true) as attempted')
 
   def self.create_from_hash!(hash)
     create(:name     => hash['user_info']['name'],

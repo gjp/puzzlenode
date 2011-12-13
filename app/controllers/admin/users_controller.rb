@@ -3,8 +3,10 @@ module Admin
     before_filter :authenticate_admin_user!
     before_filter :find_user, :only => [:edit, :update, :destroy]
 
+    helper_method :sort_column, :sort_direction
+
     def index
-      @users = User.order("created_at DESC")
+      @users = User.with_submissions.order(sort_column + ' ' + sort_direction)
 
       unless params[:search].blank?
         @users = @users.where(%{name ILIKE :criteria OR nickname ILIKE :criteria
@@ -41,6 +43,15 @@ module Admin
 
     def find_user
       @user = User.find(params[:id])
+    end
+
+    def sort_column
+      %w[name nickname solved attempted created_at].
+        include?(params[:sort]) ? params[:sort] : 'created_at'
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
     end
   end
 end

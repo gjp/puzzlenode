@@ -2,27 +2,10 @@
   %h2 Users
 
   %form{:method => "GET", :class => "search"}
+    = hidden_field_tag :sort, params[:sort]
+    = hidden_field_tag :direction, params[:direction]
     = text_field_tag :search, params[:search]
     = submit_tag "Search"
 
-  %table
-    %tr
-      %th Name
-      %th Solved
-      %th Attempted
-      %th Member Since
-      %th.controls
-    - @users.each do |user|
-      %tr
-        %td
-          = link_to user.name,
-            edit_admin_user_path(user)
-        %td= user.submissions.correct.count
-        %td= user.submissions.count
-        %td= user.created_at
-        %td
-          = link_to "Destroy", admin_user_path(user),
-            :confirm => "Are you sure you wish to destroy this user?",
-            :method  => "DELETE"
-
-  = will_paginate @users
+  %div#user_table
+    = render 'user_table'
